@@ -11,18 +11,20 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Home } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { APP_NAME } from '@/lib/constants';
 import Link from 'next/link';
+import { APP_NAME } from '@/lib/constants';
+import { useToast } from '@/hooks/use-toast';
 
-export default function LoginPage() {
-  const router = useRouter();
+export default function ForgotPasswordPage() {
+  const { toast } = useToast();
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // In a real application, you would handle authentication here.
-    // For this prototype, we'll just navigate to the dashboard.
-    router.push('/dashboard');
+    // In a real app, you'd send a password reset email.
+    toast({
+      title: 'Password Reset',
+      description: 'If an account exists with that email, a reset link has been sent.',
+    });
   };
 
   return (
@@ -33,13 +35,13 @@ export default function LoginPage() {
             <Home className="mr-2 h-8 w-8 text-primary" />
             <h1 className="text-2xl font-bold text-primary">{APP_NAME}</h1>
           </div>
-          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardTitle className="text-2xl">Forgot Password</CardTitle>
           <CardDescription>
-            Enter your credentials to access your account.
+            Enter your email to receive a password reset link.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleReset} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -47,34 +49,16 @@ export default function LoginPage() {
                 type="email"
                 placeholder="mayor@arbaminch.gov"
                 required
-                defaultValue="mayor@arbaminch.gov"
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="/forgot-password"
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input
-                id="password"
-                type="password"
-                required
-                defaultValue="password"
               />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              Send Reset Link
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
-            <Link href="/register" className="underline">
-              Sign up
+            Remembered your password?{' '}
+            <Link href="/" className="underline">
+              Sign in
             </Link>
           </div>
         </CardContent>

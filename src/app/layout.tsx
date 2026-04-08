@@ -6,6 +6,8 @@ import { APP_NAME } from '@/lib/constants';
 export const metadata: Metadata = {
   title: APP_NAME,
   description: 'Arba Minch City House Holder Information Management System',
+  manifest: '/manifest.json',
+  themeColor: '#4da64d',
 };
 
 export default function RootLayout({

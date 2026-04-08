@@ -63,28 +63,26 @@ export function MainNav() {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} legacyBehavior passHref>
-                <SidebarMenuButton
-                  asChild
-                  isActive={
-                    item.href === '/dashboard'
-                      ? pathname === item.href
-                      : pathname.startsWith(item.href)
-                  }
-                  tooltip={{
-                    children: item.label,
-                    className: 'group-data-[collapsible=icon]:flex hidden',
-                  }}
-                  className="justify-start"
-                >
-                  <a className={cn('flex items-center gap-2')}>
-                    <item.icon className="h-5 w-5" />
-                    <span className="duration-200 group-data-[collapsible=icon]:opacity-0">
-                      {item.label}
-                    </span>
-                  </a>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarMenuButton
+                asChild
+                isActive={
+                  item.href === '/dashboard'
+                    ? pathname === item.href
+                    : pathname.startsWith(item.href)
+                }
+                tooltip={{
+                  children: item.label,
+                  className: 'group-data-[collapsible=icon]:flex hidden',
+                }}
+                className="justify-start"
+              >
+                <Link href={item.href} className={cn('flex items-center gap-2')}>
+                  <item.icon className="h-5 w-5" />
+                  <span className="duration-200 group-data-[collapsible=icon]:opacity-0">
+                    {item.label}
+                  </span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

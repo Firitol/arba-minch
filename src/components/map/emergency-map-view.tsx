@@ -1,6 +1,6 @@
 'use client';
 
-import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
+import { Map, AdvancedMarker, useMapsLibrary } from '@vis.gl/react-google-maps';
 import { APIProvider } from './api-provider';
 import { useState, useMemo, useEffect } from 'react';
 import type { HouseHolder } from '@/lib/types';
@@ -23,6 +23,7 @@ export function EmergencyMapView({ houseHolders }: EmergencyMapViewProps) {
   const [selectedHolder, setSelectedHolder] = useState<HouseHolder | null>(null);
   const [open, setOpen] = useState(false);
   const [map, setMap] = useState<google.maps.Map | null>(null);
+  const markerLibrary = useMapsLibrary('marker');
 
   useEffect(() => {
     if (selectedHolder && map) {
@@ -42,9 +43,9 @@ export function EmergencyMapView({ houseHolders }: EmergencyMapViewProps) {
           gestureHandling={'greedy'}
           className="h-full w-full"
         >
-          {houseHolders.map((holder) => {
+          {markerLibrary && houseHolders.map((holder) => {
             const isSelected = selectedHolder?.id === holder.id;
-            const pin = new google.maps.marker.PinElement({
+            const pin = new markerLibrary.PinElement({
               background: isSelected ? 'hsl(var(--primary))' : '#9ca3af',
               borderColor: '#fff',
               glyph: new URL(

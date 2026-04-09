@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,19 +11,57 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Home } from 'lucide-react';
+import { Home, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
+import { useUser } from '@/firebase';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
   const router = useRouter();
   const { t } = useTranslation();
+  const { user, loading: userLoading } = useUser();
+  const { toast } = useToast();
 
-  const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!userLoading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, userLoading, router]);
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push('/dashboard');
+    setLoading(true);
+    try {
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+      router.push('/dashboard');
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  if (userLoading || user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -44,7 +83,8 @@ export default function LoginPage() {
                 type="email"
                 placeholder={t('login.emailPlaceholder')}
                 required
-                defaultValue="mayor@arbaminch.gov"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="space-y-2">
@@ -61,10 +101,12 @@ export default function LoginPage() {
                 id="password"
                 type="password"
                 required
-                defaultValue="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t('login.button')}
             </Button>
           </form>

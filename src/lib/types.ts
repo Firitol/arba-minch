@@ -1,12 +1,13 @@
 export type UserRole = 'mayor' | 'staff';
 
-export type User = {
-  id: string;
+export interface UserProfile {
+  uid: string;
   name: string;
   email: string;
   role: UserRole;
-  avatarUrl?: string;
-};
+  photoURL?: string;
+  createdAt: string; // ISO date string
+}
 
 export type HouseHolder = {
   id: string;

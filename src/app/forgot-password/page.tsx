@@ -1,5 +1,6 @@
 'use client';
 
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -10,21 +11,40 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Home } from 'lucide-react';
+import { Home, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/context/language-context';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
   const { t } = useTranslation();
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
 
-  const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleReset = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    toast({
-      title: t('forgotPassword.toastTitle'),
-      description: t('forgotPassword.toastDescription'),
-    });
+    setLoading(true);
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, email);
+      toast({
+        title: t('forgotPassword.toastTitle'),
+        description: t('forgotPassword.toastDescription'),
+      });
+      setSent(true);
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,23 +56,32 @@ export default function ForgotPasswordPage() {
             <h1 className="text-2xl font-bold text-primary">{t('appName')}</h1>
           </div>
           <CardTitle className="text-2xl">{t('forgotPassword.title')}</CardTitle>
-          <CardDescription>{t('forgotPassword.description')}</CardDescription>
+          <CardDescription>
+            {sent
+              ? t('forgotPassword.toastDescription')
+              : t('forgotPassword.description')}
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleReset} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">{t('forgotPassword.emailLabel')}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={t('forgotPassword.emailPlaceholder')}
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              {t('forgotPassword.button')}
-            </Button>
-          </form>
+          {!sent && (
+            <form onSubmit={handleReset} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">{t('forgotPassword.emailLabel')}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder={t('forgotPassword.emailPlaceholder')}
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {t('forgotPassword.button')}
+              </Button>
+            </form>
+          )}
           <div className="mt-4 text-center text-sm">
             {t('forgotPassword.rememberedPassword')}{' '}
             <Link href="/" className="underline">

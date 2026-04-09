@@ -3,6 +3,8 @@
 import { LanguageProvider, useTranslation } from '@/context/language-context';
 import { Toaster } from '@/components/ui/toaster';
 import { useEffect } from 'react';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 function AppSetup({ children }: { children: React.ReactNode }) {
   const { language, t } = useTranslation();
@@ -23,8 +25,11 @@ function AppSetup({ children }: { children: React.ReactNode }) {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
-      <AppSetup>{children}</AppSetup>
-      <Toaster />
+      <FirebaseClientProvider>
+        <AppSetup>{children}</AppSetup>
+        <Toaster />
+        <FirebaseErrorListener />
+      </FirebaseClientProvider>
     </LanguageProvider>
   );
 }

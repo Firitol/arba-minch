@@ -5,6 +5,7 @@ import { KEBELÉS } from '@/lib/constants';
 import { mockHouseHolders } from '@/lib/data';
 import { Home, MapPin, Users } from 'lucide-react';
 import { useTranslation } from '@/context/language-context';
+import Link from 'next/link';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -23,24 +24,28 @@ export default function DashboardPage() {
         </h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard
-          title={t('dashboard.totalHouseHolders')}
-          value={totalHouseHolders.toLocaleString()}
-          icon={Home}
-          description={t('dashboard.totalHouseHoldersDesc')}
-        />
+        <Link href="/dashboard/house-holders">
+          <StatCard
+            title={t('dashboard.totalHouseHolders')}
+            value={totalHouseHolders.toLocaleString()}
+            icon={Home}
+            description={t('dashboard.totalHouseHoldersDesc')}
+          />
+        </Link>
         <StatCard
           title={t('dashboard.estimatedPopulation')}
           value={totalPopulation.toLocaleString()}
           icon={Users}
           description={t('dashboard.estimatedPopulationDesc')}
         />
-        <StatCard
-          title={t('dashboard.kebelesCovered')}
-          value={`${totalKebeles} / ${KEBELÉS.length}`}
-          icon={MapPin}
-          description={t('dashboard.kebelesCoveredDesc')}
-        />
+        <Link href="/dashboard/map">
+          <StatCard
+            title={t('dashboard.kebelesCovered')}
+            value={`${totalKebeles} / ${KEBELÉS.length}`}
+            icon={MapPin}
+            description={t('dashboard.kebelesCoveredDesc')}
+          />
+        </Link>
       </div>
       <div className="mt-8">
         <h3 className="text-2xl font-bold tracking-tight">

@@ -1,13 +1,5 @@
-import type { HouseHolder, User } from '@/lib/types';
+import type { HouseHolder } from '@/lib/types';
 import { PlaceHolderImages } from './placeholder-images';
-
-export const mockUser: User = {
-  id: '1',
-  name: 'Mr. Mayor',
-  email: 'mayor@arbaminch.gov',
-  role: 'mayor',
-  avatarUrl: PlaceHolderImages[0]?.imageUrl,
-};
 
 export const mockHouseHolders: HouseHolder[] = [
   {

@@ -1,29 +1,13 @@
-'use client';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
-import { LanguageProvider, useTranslation } from '@/context/language-context';
-import { useEffect } from 'react';
+import { Providers } from './providers';
+import type { Metadata } from 'next';
 
-function LayoutContent({ children }: { children: React.ReactNode }) {
-  const { language, t } = useTranslation();
-
-  useEffect(() => {
-    document.documentElement.lang = language;
-    document.title = t('appName');
-
-    const descriptionMeta = document.querySelector('meta[name="description"]');
-    if (descriptionMeta) {
-      descriptionMeta.setAttribute('content', t('appDescription'));
-    }
-  }, [language, t]);
-
-  return (
-    <>
-      {children}
-      <Toaster />
-    </>
-  );
-}
+export const metadata: Metadata = {
+  title: 'Arba-Minch city housing',
+  description: 'Arba-Minch city housing information management system',
+  themeColor: '#49B349',
+  manifest: '/manifest.json',
+};
 
 export default function RootLayout({
   children,
@@ -31,30 +15,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <LanguageProvider>
-      <html lang="en" suppressHydrationWarning>
-        <head>
-          <meta
-            name="description"
-            content="Arba-Minch city housing information management system"
-          />
-          <meta name="theme-color" content="#49B349" />
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link
-            rel="preconnect"
-            href="https://fonts.gstatic.com"
-            crossOrigin="anonymous"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-          />
-        </head>
-        <body className="font-body antialiased">
-          <LayoutContent>{children}</LayoutContent>
-        </body>
-      </html>
-    </LanguageProvider>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="font-body antialiased">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }

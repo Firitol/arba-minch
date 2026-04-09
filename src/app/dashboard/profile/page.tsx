@@ -48,11 +48,11 @@ export default function ProfilePage() {
         title: 'Profile Updated',
         description: 'Your profile has been updated successfully.',
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Failed to update profile.',
+        description: error.message || 'Failed to update profile.',
       });
     }
   }

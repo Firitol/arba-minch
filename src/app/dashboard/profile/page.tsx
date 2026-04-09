@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useUser } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { updateUserProfile } from '@/firebase/actions';
@@ -29,6 +29,7 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 export default function ProfilePage() {
   const { user, loading } = useUser();
+  const firestore = useFirestore();
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -40,9 +41,9 @@ export default function ProfilePage() {
   });
 
   async function onSubmit(data: ProfileFormValues) {
-    if (!user?.uid) return;
+    if (!user?.uid || !firestore) return;
     try {
-      await updateUserProfile(user.uid, data);
+      await updateUserProfile(firestore, user.uid, data);
       toast({
         title: 'Profile Updated',
         description: 'Your profile has been updated successfully.',

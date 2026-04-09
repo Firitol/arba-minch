@@ -1,13 +1,15 @@
-'use server';
+'use client';
 
-import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { initializeFirebase } from './init';
+import {
+  doc,
+  setDoc,
+  serverTimestamp,
+  type Firestore,
+} from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 
-initializeFirebase();
-const db = getFirestore();
-
 export async function createUserProfile(
+  db: Firestore,
   user: User,
   additionalData: { name: string }
 ) {
@@ -24,6 +26,7 @@ export async function createUserProfile(
 }
 
 export async function updateUserProfile(
+  db: Firestore,
   uid: string,
   data: { name: string }
 ) {

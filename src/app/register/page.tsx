@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/context/language-context';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { useUser, useAuth } from '@/firebase';
+import { useUser, useAuth, useFirestore } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { createUserProfile } from '@/firebase/actions';
 
@@ -26,6 +26,7 @@ export default function RegisterPage() {
   const { user, loading: userLoading } = useUser();
   const { toast } = useToast();
   const auth = useAuth();
+  const firestore = useFirestore();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +41,7 @@ export default function RegisterPage() {
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!auth) return;
+    if (!auth || !firestore) return;
     setLoading(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
@@ -48,7 +49,7 @@ export default function RegisterPage() {
         email,
         password
       );
-      await createUserProfile(userCredential.user, { name: fullName });
+      await createUserProfile(firestore, userCredential.user, { name: fullName });
       toast({
         title: 'Account Created',
         description: "You've been successfully registered.",

@@ -1,10 +1,13 @@
 import './globals.css';
 import { Providers } from './providers';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 export const metadata: Metadata = {
   title: 'Arba-Minch city housing',
   description: 'Arba-Minch city housing information management system',
+};
+
+export const viewport: Viewport = {
   themeColor: '#49B349',
 };
 

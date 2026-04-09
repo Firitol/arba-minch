@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, createContext, useContext } from 'react';
-import { getAuth, onAuthStateChanged, type User } from 'firebase/auth';
-import { useFirestore, useDoc } from '@/firebase';
+import { onAuthStateChanged, type User } from 'firebase/auth';
+import { useFirestore, useDoc, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import type { UserProfile } from '@/lib/types';
 import { useMemoFirebase } from '../utils';
@@ -20,15 +20,19 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const firestore = useFirestore();
+  const auth = useAuth();
 
   useEffect(() => {
-    const auth = getAuth();
+    if (!auth) {
+      setLoading(false);
+      return;
+    }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
     });
     return () => unsubscribe();
-  }, []);
+  }, [auth]);
 
   const userProfileRef = useMemoFirebase(
     () => (firestore && user ? doc(firestore, 'users', user.uid) : null),

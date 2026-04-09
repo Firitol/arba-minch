@@ -15,8 +15,8 @@ import { Home, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useTranslation } from '@/context/language-context';
-import { useUser } from '@/firebase';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useUser, useAuth } from '@/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 
 export default function LoginPage() {
@@ -24,6 +24,7 @@ export default function LoginPage() {
   const { t } = useTranslation();
   const { user, loading: userLoading } = useUser();
   const { toast } = useToast();
+  const auth = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -37,9 +38,9 @@ export default function LoginPage() {
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!auth) return;
     setLoading(true);
     try {
-      const auth = getAuth();
       await signInWithEmailAndPassword(auth, email, password);
       router.push('/dashboard');
     } catch (error: any) {

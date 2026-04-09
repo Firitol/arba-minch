@@ -15,8 +15,8 @@ import { Home, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from '@/context/language-context';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { useUser } from '@/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { useUser, useAuth } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { createUserProfile } from '@/firebase/actions';
 
@@ -25,6 +25,7 @@ export default function RegisterPage() {
   const { t } = useTranslation();
   const { user, loading: userLoading } = useUser();
   const { toast } = useToast();
+  const auth = useAuth();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -39,9 +40,9 @@ export default function RegisterPage() {
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!auth) return;
     setLoading(true);
     try {
-      const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,

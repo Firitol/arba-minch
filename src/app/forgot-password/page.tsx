@@ -15,20 +15,22 @@ import { Home, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/context/language-context';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { useAuth } from '@/firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
   const { t } = useTranslation();
+  const auth = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
   const handleReset = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!auth) return;
     setLoading(true);
     try {
-      const auth = getAuth();
       await sendPasswordResetEmail(auth, email);
       toast({
         title: t('forgotPassword.toastTitle'),

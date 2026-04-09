@@ -22,8 +22,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useSidebar } from '@/components/ui/sidebar';
 import { useTranslation } from '@/context/language-context';
-import { useUser } from '@/firebase';
-import { getAuth, signOut } from 'firebase/auth';
+import { useUser, useAuth } from '@/firebase';
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
 export default function Header() {
@@ -31,9 +31,10 @@ export default function Header() {
   const { user, loading } = useUser();
   const { t, setLanguage, language } = useTranslation();
   const router = useRouter();
+  const auth = useAuth();
 
   const handleLogout = async () => {
-    const auth = getAuth();
+    if (!auth) return;
     await signOut(auth);
     router.push('/');
   };

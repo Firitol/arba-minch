@@ -36,9 +36,9 @@ export default function RootLayout({
         <head>
           <meta
             name="description"
-            content="Arba Minch City House Holder Information Management System"
+            content="Arba-Minch city housing information management system"
           />
-          <meta name="theme-color" content="#4da64d" />
+          <meta name="theme-color" content="#49B349" />
           <link rel="manifest" href="/manifest.json" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link

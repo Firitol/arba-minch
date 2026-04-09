@@ -1,6 +1,3 @@
-# Firebase Studio
+# Arba-Minch city housing
 
-This is a NextJS starter in Firebase Studio.
-
-To get started, take a look at src/app/page.tsx.
-# arba-minch
+This is a Next.js application built with Firebase Studio to manage housing information for Arba-Minch city.

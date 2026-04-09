@@ -1,7 +1,11 @@
 {
-  "name": "ArbaHouse Hub",
-  "short_name": "ArbaHouse",
-  "description": "Arba Minch City House Holder Information Management System",
+  "name": "Arba-Minch city housing",
+  "short_name": "Arba-Minch Housing",
+  "description": "Arba-Minch city housing information management system",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EDF4ED",
+  "theme_color": "#49B349",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
@@ -13,9 +17,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#eef6ee",
-  "theme_color": "#4da64d"
+  ]
 }

@@ -1,5 +1,6 @@
 {
-  "appName": "ArbaHouse Hub",
+  "appName": "Arba-Minch city housing",
+  "appDescription": "Arba-Minch city housing information management system",
   "login": {
     "title": "Login",
     "description": "Enter your credentials to access your account.",

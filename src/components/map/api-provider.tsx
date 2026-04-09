@@ -1,11 +1,12 @@
-
 'use client';
 
 import { APIProvider as GoogleApiProvider } from '@vis.gl/react-google-maps';
 import type { ReactNode } from 'react';
 import { Skeleton } from '../ui/skeleton';
+import { useTranslation } from '@/context/language-context';
 
 export function APIProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!apiKey) {
@@ -29,11 +30,10 @@ export function APIProvider({ children }: { children: ReactNode }) {
           </svg>
         </div>
         <h3 className="text-xl font-semibold text-destructive">
-          Google Maps API Key is Missing
+          {t('apiProvider.errorTitle')}
         </h3>
         <p className="mt-2 max-w-md text-sm text-muted-foreground">
-          Please provide a valid Google Maps API key in your environment
-          variables (NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) to enable map features.
+          {t('apiProvider.errorDesc')}
         </p>
         <Skeleton className="mt-6 h-[200px] w-full max-w-md" />
       </div>

@@ -41,16 +41,19 @@ import type { HouseHolder } from '@/lib/types';
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/context/language-context';
 
 interface HouseHoldersTableProps {
   data: HouseHolder[];
 }
 
 export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [filterKebele, setFilterKebele] = React.useState('all');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
-  const [selectedHolder, setSelectedHolder] = React.useState<HouseHolder | null>(null);
+  const [selectedHolder, setSelectedHolder] =
+    React.useState<HouseHolder | null>(null);
   const { toast } = useToast();
 
   const filteredData = data
@@ -70,13 +73,15 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
       // Here you would call your delete action/API
       toast({
         title: 'Success',
-        description: `House holder ${selectedHolder.fullName} has been deleted.`,
+        description: t('houseHoldersTable.deleteSuccessToast', {
+          fullName: selectedHolder.fullName,
+        }),
       });
       setIsDeleteDialogOpen(false);
       setSelectedHolder(null);
     }
   };
-  
+
   const openDeleteDialog = (holder: HouseHolder) => {
     setSelectedHolder(holder);
     setIsDeleteDialogOpen(true);
@@ -86,17 +91,21 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
     <div className="space-y-4">
       <div className="flex items-center gap-4">
         <Input
-          placeholder="Search by name or house number..."
+          placeholder={t('houseHoldersTable.searchPlaceholder')}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-sm"
         />
         <Select value={filterKebele} onValueChange={setFilterKebele}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Filter by Kebele" />
+            <SelectValue
+              placeholder={t('houseHoldersTable.filterKebelePlaceholder')}
+            />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Kebeles</SelectItem>
+            <SelectItem value="all">
+              {t('houseHoldersTable.allKebeles')}
+            </SelectItem>
             {KEBELÉS.map((kebele) => (
               <SelectItem key={kebele} value={kebele}>
                 {kebele}
@@ -109,19 +118,23 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Full Name</TableHead>
-              <TableHead>House Number</TableHead>
-              <TableHead>Kebele</TableHead>
-              <TableHead>Phone Number</TableHead>
-              <TableHead>Family Size</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>{t('houseHoldersTable.colFullName')}</TableHead>
+              <TableHead>{t('houseHoldersTable.colHouseNumber')}</TableHead>
+              <TableHead>{t('houseHoldersTable.colKebele')}</TableHead>
+              <TableHead>{t('houseHoldersTable.colPhone')}</TableHead>
+              <TableHead>{t('houseHoldersTable.colFamilySize')}</TableHead>
+              <TableHead className="text-right">
+                {t('houseHoldersTable.colActions')}
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredData.length > 0 ? (
               filteredData.map((holder) => (
                 <TableRow key={holder.id}>
-                  <TableCell className="font-medium">{holder.fullName}</TableCell>
+                  <TableCell className="font-medium">
+                    {holder.fullName}
+                  </TableCell>
                   <TableCell>{holder.houseNumber}</TableCell>
                   <TableCell>{holder.kebele}</TableCell>
                   <TableCell>{holder.phone}</TableCell>
@@ -135,17 +148,24 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>
+                          {t('houseHoldersTable.actionsLabel')}
+                        </DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                           <Link href={`/dashboard/house-holders/${holder.id}/edit`}>
-                             <Pencil className="mr-2 h-4 w-4" />
-                             Edit
-                           </Link>
+                          <Link
+                            href={`/dashboard/house-holders/${holder.id}/edit`}
+                          >
+                            <Pencil className="mr-2 h-4 w-4" />
+                            {t('houseHoldersTable.edit')}
+                          </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => openDeleteDialog(holder)} className="text-destructive">
-                           <Trash2 className="mr-2 h-4 w-4" />
-                           Delete
+                        <DropdownMenuItem
+                          onClick={() => openDeleteDialog(holder)}
+                          className="text-destructive"
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          {t('houseHoldersTable.delete')}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -155,25 +175,34 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
             ) : (
               <TableRow>
                 <TableCell colSpan={6} className="h-24 text-center">
-                  No results found.
+                  {t('houseHoldersTable.noResults')}
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t('houseHoldersTable.deleteDialogTitle')}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the house holder record for{' '}
+              {t('houseHoldersTable.deleteDialogDesc')}{' '}
               <strong>{selectedHolder?.fullName}</strong>.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteConfirm}>Delete</AlertDialogAction>
+            <AlertDialogCancel>
+              {t('houseHoldersTable.cancel')}
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteConfirm}>
+              {t('houseHoldersTable.deleteConfirm')}
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

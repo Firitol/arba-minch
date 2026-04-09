@@ -17,34 +17,35 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from '@/components/ui/sidebar';
-import { APP_NAME } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-
-const menuItems = [
-  {
-    href: '/dashboard',
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    href: '/dashboard/house-holders',
-    label: 'House Holders',
-    icon: Users,
-  },
-  {
-    href: '/dashboard/map',
-    label: 'Map View',
-    icon: MapIcon,
-  },
-  {
-    href: '/dashboard/emergency',
-    label: 'Emergency Finder',
-    icon: Siren,
-  },
-];
+import { useTranslation } from '@/context/language-context';
 
 export function MainNav() {
   const pathname = usePathname();
+  const { t } = useTranslation();
+
+  const menuItems = [
+    {
+      href: '/dashboard',
+      label: t('nav.dashboard'),
+      icon: LayoutDashboard,
+    },
+    {
+      href: '/dashboard/house-holders',
+      label: t('nav.houseHolders'),
+      icon: Users,
+    },
+    {
+      href: '/dashboard/map',
+      label: t('nav.mapView'),
+      icon: MapIcon,
+    },
+    {
+      href: '/dashboard/emergency',
+      label: t('nav.emergencyFinder'),
+      icon: Siren,
+    },
+  ];
 
   return (
     <>
@@ -55,7 +56,7 @@ export function MainNav() {
         >
           <Home className="h-6 w-6 text-primary" />
           <span className="duration-200 group-data-[collapsible=icon]:opacity-0">
-            {APP_NAME}
+            {t('appName')}
           </span>
         </Link>
       </SidebarHeader>

@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,22 +27,7 @@ import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { LocationPicker } from '../map/location-picker';
 import { useState } from 'react';
-
-const formSchema = z.object({
-  fullName: z.string().min(2, {
-    message: 'Full name must be at least 2 characters.',
-  }),
-  houseNumber: z.string().min(1, { message: 'House number is required.' }),
-  phone: z
-    .string()
-    .regex(/^09\d{8}$/, { message: 'Invalid Ethiopian phone number.' }),
-  familySize: z.coerce.number().int().min(1, { message: 'Family size must be at least 1.' }),
-  kebele: z.string({ required_error: 'Please select a kebele.' }),
-  latitude: z.number(),
-  longitude: z.number(),
-});
-
-type HouseHolderFormValues = z.infer<typeof formSchema>;
+import { useTranslation } from '@/context/language-context';
 
 interface HouseHolderFormProps {
   houseHolder?: HouseHolder;
@@ -52,7 +36,24 @@ interface HouseHolderFormProps {
 export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const isEditMode = !!houseHolder;
+
+  const formSchema = z.object({
+    fullName: z.string().min(2, {
+      message: t('holderForm.fullNameMinCharsError'),
+    }),
+    houseNumber: z.string().min(1, { message: t('holderForm.houseNumberRequiredError') }),
+    phone: z
+      .string()
+      .regex(/^09\d{8}$/, { message: t('holderForm.phoneInvalidError') }),
+    familySize: z.coerce.number().int().min(1, { message: t('holderForm.familySizeMinError') }),
+    kebele: z.string({ required_error: t('holderForm.kebeleRequiredError') }),
+    latitude: z.number(),
+    longitude: z.number(),
+  });
+
+  type HouseHolderFormValues = z.infer<typeof formSchema>;
 
   const form = useForm<HouseHolderFormValues>({
     resolver: zodResolver(formSchema),
@@ -66,20 +67,18 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
       longitude: houseHolder?.longitude || 37.55,
     },
   });
-
+  
   const [location, setLocation] = useState({
     lat: form.getValues('latitude'),
     lng: form.getValues('longitude'),
   });
 
   function onSubmit(values: HouseHolderFormValues) {
-    // In a real app, you'd submit this to Firebase/backend
+    const action = isEditMode ? t('holderForm.actionUpdated') : t('holderForm.actionCreated');
     console.log(values);
     toast({
-      title: `Success: ${isEditMode ? 'Updated' : 'Created'}`,
-      description: `House holder ${values.fullName} has been successfully ${
-        isEditMode ? 'updated' : 'created'
-      }.`,
+      title: t('holderForm.successToastTitle', { action }),
+      description: t('holderForm.successToastDesc', { fullName: values.fullName, action }),
     });
     router.push('/dashboard/house-holders');
     router.refresh();
@@ -91,7 +90,7 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader>
-              <CardTitle>House Holder Details</CardTitle>
+              <CardTitle>{t('holderForm.detailsTitle')}</CardTitle>
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-6 md:grid-cols-2">
               <FormField
@@ -99,9 +98,9 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                 name="fullName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>{t('holderForm.fullNameLabel')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Abebe Kebede" {...field} />
+                      <Input placeholder={t('holderForm.fullNamePlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -112,9 +111,9 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                 name="houseNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>House Number</FormLabel>
+                    <FormLabel>{t('holderForm.houseNumberLabel')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="ABM-123" {...field} />
+                      <Input placeholder={t('holderForm.houseNumberPlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -125,9 +124,9 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone Number</FormLabel>
+                    <FormLabel>{t('holderForm.phoneLabel')}</FormLabel>
                     <FormControl>
-                      <Input placeholder="0912345678" {...field} />
+                      <Input placeholder={t('holderForm.phonePlaceholder')} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -138,7 +137,7 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                 name="familySize"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Family Size</FormLabel>
+                    <FormLabel>{t('holderForm.familySizeLabel')}</FormLabel>
                     <FormControl>
                       <Input type="number" min="1" {...field} />
                     </FormControl>
@@ -151,14 +150,14 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                 name="kebele"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Kebele / Area</FormLabel>
+                    <FormLabel>{t('holderForm.kebeleLabel')}</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder="Select a kebele" />
+                          <SelectValue placeholder={t('holderForm.kebelePlaceholder')} />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -177,24 +176,24 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Location</CardTitle>
+              <CardTitle>{t('holderForm.locationTitle')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-               <LocationPicker
-                 position={location}
-                 onPositionChange={(pos) => {
-                   form.setValue('latitude', pos.lat, { shouldValidate: true });
-                   form.setValue('longitude', pos.lng, { shouldValidate: true });
-                   setLocation(pos);
-                 }}
-               />
+              <LocationPicker
+                position={location}
+                onPositionChange={(pos) => {
+                  form.setValue('latitude', pos.lat, { shouldValidate: true });
+                  form.setValue('longitude', pos.lng, { shouldValidate: true });
+                  setLocation(pos);
+                }}
+              />
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="latitude"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Latitude</FormLabel>
+                      <FormLabel>{t('holderForm.latitudeLabel')}</FormLabel>
                       <FormControl>
                         <Input type="number" readOnly {...field} />
                       </FormControl>
@@ -207,7 +206,7 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
                   name="longitude"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Longitude</FormLabel>
+                      <FormLabel>{t('holderForm.longitudeLabel')}</FormLabel>
                       <FormControl>
                         <Input type="number" readOnly {...field} />
                       </FormControl>
@@ -225,9 +224,11 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
             variant="outline"
             onClick={() => router.back()}
           >
-            Cancel
+            {t('holderForm.cancel')}
           </Button>
-          <Button type="submit">{isEditMode ? 'Update' : 'Create'}</Button>
+          <Button type="submit">
+            {isEditMode ? t('holderForm.update') : t('holderForm.create')}
+          </Button>
         </div>
       </form>
     </Form>

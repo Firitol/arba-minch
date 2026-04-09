@@ -13,15 +13,14 @@ import { Label } from '@/components/ui/label';
 import { Home } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { APP_NAME } from '@/lib/constants';
+import { useTranslation } from '@/context/language-context';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleRegister = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // In a real application, you would handle registration logic here.
-    // For this prototype, we'll just navigate to the dashboard.
     router.push('/dashboard');
   };
 
@@ -29,42 +28,44 @@ export default function RegisterPage() {
     <main className="flex min-h-screen flex-col items-center justify-center p-4">
       <Card className="mx-auto max-w-sm">
         <CardHeader className="text-center">
-           <div className="mx-auto mb-4 flex items-center justify-center">
-             <Home className="mr-2 h-8 w-8 text-primary" />
-             <h1 className="text-2xl font-bold text-primary">{APP_NAME}</h1>
-           </div>
-          <CardTitle className="text-2xl">Sign Up</CardTitle>
-          <CardDescription>
-            Enter your information to create an account
-          </CardDescription>
+          <div className="mx-auto mb-4 flex items-center justify-center">
+            <Home className="mr-2 h-8 w-8 text-primary" />
+            <h1 className="text-2xl font-bold text-primary">{t('appName')}</h1>
+          </div>
+          <CardTitle className="text-2xl">{t('register.title')}</CardTitle>
+          <CardDescription>{t('register.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleRegister} className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="full-name">Full Name</Label>
-              <Input id="full-name" placeholder="Abebe Kebede" required />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="full-name">{t('register.fullNameLabel')}</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="mayor@arbaminch.gov"
+                id="full-name"
+                placeholder={t('register.fullNamePlaceholder')}
                 required
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="email">{t('register.emailLabel')}</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder={t('register.emailPlaceholder')}
+                required
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">{t('register.passwordLabel')}</Label>
               <Input id="password" type="password" required />
             </div>
             <Button type="submit" className="w-full">
-              Create an account
+              {t('register.button')}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Already have an account?{' '}
+            {t('register.haveAccount')}{' '}
             <Link href="/" className="underline">
-              Sign in
+              {t('register.signIn')}
             </Link>
           </div>
         </CardContent>

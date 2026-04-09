@@ -12,16 +12,15 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Home } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { APP_NAME } from '@/lib/constants';
 import Link from 'next/link';
+import { useTranslation } from '@/context/language-context';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleLogin = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // In a real application, you would handle authentication here.
-    // For this prototype, we'll just navigate to the dashboard.
     router.push('/dashboard');
   };
 
@@ -31,33 +30,31 @@ export default function LoginPage() {
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex items-center justify-center">
             <Home className="mr-2 h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">{APP_NAME}</h1>
+            <h1 className="text-2xl font-bold text-primary">{t('appName')}</h1>
           </div>
-          <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>
-            Enter your credentials to access your account.
-          </CardDescription>
+          <CardTitle className="text-2xl">{t('login.title')}</CardTitle>
+          <CardDescription>{t('login.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('login.emailLabel')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="mayor@arbaminch.gov"
+                placeholder={t('login.emailPlaceholder')}
                 required
                 defaultValue="mayor@arbaminch.gov"
               />
             </div>
             <div className="space-y-2">
               <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t('login.passwordLabel')}</Label>
                 <Link
                   href="/forgot-password"
                   className="ml-auto inline-block text-sm underline"
                 >
-                  Forgot your password?
+                  {t('login.forgotPassword')}
                 </Link>
               </div>
               <Input
@@ -68,13 +65,13 @@ export default function LoginPage() {
               />
             </div>
             <Button type="submit" className="w-full">
-              Login
+              {t('login.button')}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Don&apos;t have an account?{' '}
+            {t('login.noAccount')}{' '}
             <Link href="/register" className="underline">
-              Sign up
+              {t('login.signUp')}
             </Link>
           </div>
         </CardContent>

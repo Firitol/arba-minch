@@ -1,14 +1,29 @@
-import type { Metadata } from 'next';
+'use client';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { APP_NAME } from '@/lib/constants';
+import { LanguageProvider, useTranslation } from '@/context/language-context';
+import { useEffect } from 'react';
 
-export const metadata: Metadata = {
-  title: APP_NAME,
-  description: 'Arba Minch City House Holder Information Management System',
-  manifest: '/manifest.json',
-  themeColor: '#4da64d',
-};
+function LayoutContent({ children }: { children: React.ReactNode }) {
+  const { language, t } = useTranslation();
+
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.title = t('appName');
+
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta) {
+      descriptionMeta.setAttribute('content', t('appDescription'));
+    }
+  }, [language, t]);
+
+  return (
+    <>
+      {children}
+      <Toaster />
+    </>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -16,19 +31,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="font-body antialiased">
-        {children}
-        <Toaster />
-      </body>
-    </html>
+    <LanguageProvider>
+      <html lang="en" suppressHydrationWarning>
+        <head>
+          <meta
+            name="description"
+            content="Arba Minch City House Holder Information Management System"
+          />
+          <meta name="theme-color" content="#4da64d" />
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="https://fonts.gstatic.com"
+            crossOrigin="anonymous"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+        </head>
+        <body className="font-body antialiased">
+          <LayoutContent>{children}</LayoutContent>
+        </body>
+      </html>
+    </LanguageProvider>
   );
 }

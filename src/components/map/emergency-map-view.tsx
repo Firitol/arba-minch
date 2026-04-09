@@ -1,8 +1,12 @@
 'use client';
 
-import { Map, AdvancedMarker, useMapsLibrary } from '@vis.gl/react-google-maps';
+import {
+  Map,
+  AdvancedMarker,
+  useMapsLibrary,
+} from '@vis.gl/react-google-maps';
 import { APIProvider } from './api-provider';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { HouseHolder } from '@/lib/types';
 import { ARBA_MINCH_COORDS } from '@/lib/constants';
 import {
@@ -13,15 +17,17 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { cn } from '@/lib/utils';
+import { useTranslation } from '@/context/language-context';
 
 interface EmergencyMapViewProps {
   houseHolders: HouseHolder[];
 }
 
 export function EmergencyMapView({ houseHolders }: EmergencyMapViewProps) {
-  const [selectedHolder, setSelectedHolder] = useState<HouseHolder | null>(null);
-  const [open, setOpen] = useState(false);
+  const { t } = useTranslation();
+  const [selectedHolder, setSelectedHolder] = useState<HouseHolder | null>(
+    null
+  );
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markerLibrary = useMapsLibrary('marker');
 
@@ -43,29 +49,30 @@ export function EmergencyMapView({ houseHolders }: EmergencyMapViewProps) {
           gestureHandling={'greedy'}
           className="h-full w-full"
         >
-          {markerLibrary && houseHolders.map((holder) => {
-            const isSelected = selectedHolder?.id === holder.id;
-            const pin = new markerLibrary.PinElement({
-              background: isSelected ? 'hsl(var(--primary))' : '#9ca3af',
-              borderColor: '#fff',
-              glyph: new URL(
-                'https://maps.gstatic.com/mapfiles/arrow.png'
-              ),
-            });
-            return (
-              <AdvancedMarker
-                key={holder.id}
-                position={{ lat: holder.latitude, lng: holder.longitude }}
-                content={pin.element}
-              />
-            );
-          })}
+          {markerLibrary &&
+            houseHolders.map((holder) => {
+              const isSelected = selectedHolder?.id === holder.id;
+              const pin = new markerLibrary.PinElement({
+                background: isSelected ? 'hsl(var(--primary))' : '#9ca3af',
+                borderColor: '#fff',
+                glyph: new URL(
+                  'https://maps.gstatic.com/mapfiles/arrow.png'
+                ),
+              });
+              return (
+                <AdvancedMarker
+                  key={holder.id}
+                  position={{ lat: holder.latitude, lng: holder.longitude }}
+                  content={pin.element}
+                />
+              );
+            })}
         </Map>
         <div className="absolute left-4 top-4 w-full max-w-sm">
           <Command className="rounded-lg border shadow-md">
-            <CommandInput placeholder="Search by house number..." />
+            <CommandInput placeholder={t('emergencyPage.searchPlaceholder')} />
             <CommandList>
-              <CommandEmpty>No house number found.</CommandEmpty>
+              <CommandEmpty>{t('emergencyPage.noHouseNumberFound')}</CommandEmpty>
               <CommandGroup>
                 {houseHolders.map((holder) => (
                   <CommandItem

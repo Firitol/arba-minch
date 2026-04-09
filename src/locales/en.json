@@ -1,0 +1,159 @@
+{
+  "appName": "ArbaHouse Hub",
+  "login": {
+    "title": "Login",
+    "description": "Enter your credentials to access your account.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "mayor@arbaminch.gov",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot your password?",
+    "button": "Login",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up"
+  },
+  "register": {
+    "title": "Sign Up",
+    "description": "Enter your information to create an account",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Abebe Kebede",
+    "emailLabel": "Email",
+    "emailPlaceholder": "mayor@arbaminch.gov",
+    "passwordLabel": "Password",
+    "button": "Create an account",
+    "haveAccount": "Already have an account?",
+    "signIn": "Sign in"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "description": "Enter your email to receive a password reset link.",
+    "emailLabel": "Email",
+    "emailPlaceholder": "mayor@arbaminch.gov",
+    "button": "Send Reset Link",
+    "rememberedPassword": "Remembered your password?",
+    "signIn": "Sign in",
+    "toastTitle": "Password Reset",
+    "toastDescription": "If an account exists with that email, a reset link has been sent."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "totalHouseHolders": "Total House Holders",
+    "totalHouseHoldersDesc": "Total registered properties",
+    "estimatedPopulation": "Estimated Population",
+    "estimatedPopulationDesc": "Based on family size",
+    "kebelesCovered": "Kebeles Covered",
+    "kebelesCoveredDesc": "Active areas in the system",
+    "welcome": "Welcome to {appName}",
+    "welcomeDesc": "Use the navigation to manage house holder information, view locations on the map, or use the emergency finder for rapid response."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "houseHolders": "House Holders",
+    "mapView": "Map View",
+    "emergencyFinder": "Emergency Finder"
+  },
+  "header": {
+    "toggleMenu": "Toggle Menu",
+    "toggleUserMenu": "Toggle user menu",
+    "profile": "Profile",
+    "logout": "Log out"
+  },
+  "houseHoldersPage": {
+    "title": "House Holders",
+    "importCsv": "Import from CSV",
+    "addHolder": "Add House Holder"
+  },
+  "houseHoldersTable": {
+    "searchPlaceholder": "Search by name or house number...",
+    "filterKebelePlaceholder": "Filter by Kebele",
+    "allKebeles": "All Kebeles",
+    "colFullName": "Full Name",
+    "colHouseNumber": "House Number",
+    "colKebele": "Kebele",
+    "colPhone": "Phone Number",
+    "colFamilySize": "Family Size",
+    "colActions": "Actions",
+    "noResults": "No results found.",
+    "actionsLabel": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleteDialogTitle": "Are you sure?",
+    "deleteDialogDesc": "This action cannot be undone. This will permanently delete the house holder record for",
+    "cancel": "Cancel",
+    "deleteConfirm": "Delete",
+    "deleteSuccessToast": "House holder {fullName} has been deleted."
+  },
+  "addHolderPage": {
+    "title": "Add New House Holder"
+  },
+  "editHolderPage": {
+    "title": "Edit House Holder"
+  },
+  "holderForm": {
+    "detailsTitle": "House Holder Details",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "Abebe Kebede",
+    "fullNameMinCharsError": "Full name must be at least 2 characters.",
+    "houseNumberLabel": "House Number",
+    "houseNumberPlaceholder": "ABM-123",
+    "houseNumberRequiredError": "House number is required.",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "0912345678",
+    "phoneInvalidError": "Invalid Ethiopian phone number.",
+    "familySizeLabel": "Family Size",
+    "familySizeMinError": "Family size must be at least 1.",
+    "kebeleLabel": "Kebele / Area",
+    "kebelePlaceholder": "Select a kebele",
+    "kebeleRequiredError": "Please select a kebele.",
+    "locationTitle": "Location",
+    "latitudeLabel": "Latitude",
+    "longitudeLabel": "Longitude",
+    "cancel": "Cancel",
+    "create": "Create",
+    "update": "Update",
+    "successToastTitle": "Success: {action}",
+    "successToastDesc": "House holder {fullName} has been successfully {action}.",
+    "actionCreated": "created",
+    "actionUpdated": "updated"
+  },
+  "mapPage": {
+    "title": "House Holders Map View"
+  },
+  "mapView": {
+    "infoWindow": {
+      "phone": "Phone",
+      "viewDetails": "View Details"
+    }
+  },
+  "emergencyPage": {
+    "title": "Emergency Location Finder",
+    "description": "Quickly search by house number to locate a property on the map.",
+    "searchPlaceholder": "Search by house number...",
+    "noHouseNumberFound": "No house number found."
+  },
+  "csvImporter": {
+    "button": "Import from CSV",
+    "dialogTitle": "Import House Holders from CSV",
+    "dialogDescription": "Upload a CSV file with house holder data. The file must contain the headers: fullName, houseNumber, phone, familySize, kebele, latitude, and longitude.",
+    "fileLabel": "CSV File",
+    "fileTypeError": "Please upload a valid CSV file.",
+    "missingColsError": "CSV is missing required columns: {fields}.",
+    "parsingError": "Error parsing CSV: {message}",
+    "previewTitle": "Data Preview",
+    "colFullName": "Full Name",
+    "colHouseNumber": "House No.",
+    "colKebele": "Kebele",
+    "colFamilySize": "Family Size",
+    "colPhone": "Phone",
+    "cancel": "Cancel",
+    "importButton": "Import {count} Records",
+    "importSuccessToastTitle": "Import Successful",
+    "importSuccessToastDesc": "{count} house holder records have been prepared for import."
+  },
+  "apiProvider": {
+    "errorTitle": "Google Maps API Key is Missing",
+    "errorDesc": "Please provide a valid Google Maps API key in your environment variables (NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) to enable map features."
+  },
+  "language": "Language",
+  "english": "English",
+  "amharic": "Amharic"
+}

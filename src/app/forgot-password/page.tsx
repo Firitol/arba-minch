@@ -12,18 +12,18 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Home } from 'lucide-react';
 import Link from 'next/link';
-import { APP_NAME } from '@/lib/constants';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/context/language-context';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // In a real app, you'd send a password reset email.
     toast({
-      title: 'Password Reset',
-      description: 'If an account exists with that email, a reset link has been sent.',
+      title: t('forgotPassword.toastTitle'),
+      description: t('forgotPassword.toastDescription'),
     });
   };
 
@@ -33,32 +33,30 @@ export default function ForgotPasswordPage() {
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 flex items-center justify-center">
             <Home className="mr-2 h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold text-primary">{APP_NAME}</h1>
+            <h1 className="text-2xl font-bold text-primary">{t('appName')}</h1>
           </div>
-          <CardTitle className="text-2xl">Forgot Password</CardTitle>
-          <CardDescription>
-            Enter your email to receive a password reset link.
-          </CardDescription>
+          <CardTitle className="text-2xl">{t('forgotPassword.title')}</CardTitle>
+          <CardDescription>{t('forgotPassword.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleReset} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('forgotPassword.emailLabel')}</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="mayor@arbaminch.gov"
+                placeholder={t('forgotPassword.emailPlaceholder')}
                 required
               />
             </div>
             <Button type="submit" className="w-full">
-              Send Reset Link
+              {t('forgotPassword.button')}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
-            Remembered your password?{' '}
+            {t('forgotPassword.rememberedPassword')}{' '}
             <Link href="/" className="underline">
-              Sign in
+              {t('forgotPassword.signIn')}
             </Link>
           </div>
         </CardContent>

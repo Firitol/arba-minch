@@ -1,0 +1,159 @@
+{
+    "appName": "አርባ ሀውስ ሀብ",
+    "login": {
+        "title": "ግባ",
+        "description": "ወደ መለያዎ ለመግባት ምስክርነቶችዎን ያስገቡ።",
+        "emailLabel": "ኢሜይል",
+        "emailPlaceholder": "mayor@arbaminch.gov",
+        "passwordLabel": "የይለፍቃል",
+        "forgotPassword": "የይለፍ ቃልዎን ረሱ?",
+        "button": "ግባ",
+        "noAccount": "መለያ የለዎትም?",
+        "signUp": "ይመዝገቡ"
+    },
+    "register": {
+        "title": "ይመዝገቡ",
+        "description": "መለያ ለመፍጠር መረጃዎን ያስገቡ",
+        "fullNameLabel": "ሙሉ ስም",
+        "fullNamePlaceholder": "አበበ ከበደ",
+        "emailLabel": "ኢሜይል",
+        "emailPlaceholder": "mayor@arbaminch.gov",
+        "passwordLabel": "የይለፍቃል",
+        "button": "መለያ ፍጠር",
+        "haveAccount": "አስቀድመው መለያ አለዎት?",
+        "signIn": "ይግቡ"
+    },
+    "forgotPassword": {
+        "title": "የይለፍቃል ረሱ",
+        "description": "የይለፍ ቃል ዳግም ማስጀመሪያ አገናኝ ለመቀበል ኢሜልዎን ያስገቡ።",
+        "emailLabel": "ኢሜይል",
+        "emailPlaceholder": "mayor@arbaminch.gov",
+        "button": "ዳግም ማስጀመሪያ ሊንክ ላክ",
+        "rememberedPassword": "የይለፍ ቃልዎን አስታውሰዋል?",
+        "signIn": "ይግቡ",
+        "toastTitle": "የይለፍ ቃል ዳግም ማስጀመር",
+        "toastDescription": "በዚያ ኢሜይል መለያ ካለ፣ ዳግም ማስጀመሪያ አገናኝ ተልኳል።"
+    },
+    "dashboard": {
+        "title": "ዳሽቦርድ",
+        "totalHouseHolders": "ጠቅላላ የቤት ባለቤቶች",
+        "totalHouseHoldersDesc": "ጠቅላላ የተመዘገቡ ንብረቶች",
+        "estimatedPopulation": "የተገመተው የህዝብ ብዛት",
+        "estimatedPopulationDesc": "በቤተሰብ ብዛት ላይ የተመሰረተ",
+        "kebelesCovered": "የተሸፈኑ ቀበሌዎች",
+        "kebelesCoveredDesc": "በስርዓቱ ውስጥ ንቁ አካባቢዎች",
+        "welcome": "እንኳን ወደ {appName} በደህና መጡ",
+        "welcomeDesc": "የቤት ባለቤቶችን መረጃ ለማስተዳደር፣ በካርታው ላይ ያሉ ቦታዎችን ለማየት ወይም ለፈጣን ምላሽ የአደጋ ጊዜ መፈለጊያውን ለመጠቀም አሰሳውን ይጠቀሙ።"
+    },
+    "nav": {
+        "dashboard": "ዳሽቦርድ",
+        "houseHolders": "የቤት ባለቤቶች",
+        "mapView": "የካርታ እይታ",
+        "emergencyFinder": "የአደጋ ጊዜ አግኚ"
+    },
+    "header": {
+        "toggleMenu": "ምናሌን ቀያይር",
+        "toggleUserMenu": "የተጠቃሚ ምናሌን ቀያይር",
+        "profile": "መገለጫ",
+        "logout": "ውጣ"
+    },
+    "houseHoldersPage": {
+        "title": "የቤት ባለቤቶች",
+        "importCsv": "ከCSV አስመጣ",
+        "addHolder": "የቤት ባለቤት ጨምር"
+    },
+    "houseHoldersTable": {
+        "searchPlaceholder": "በስም ወይም በቤት ቁጥር ይፈልጉ...",
+        "filterKebelePlaceholder": "በቀበሌ ማጣሪያ",
+        "allKebeles": "ሁሉም ቀበሌዎች",
+        "colFullName": "ሙሉ ስም",
+        "colHouseNumber": "የቤት ቁጥር",
+        "colKebele": "ቀበሌ",
+        "colPhone": "ስልክ ቁጥር",
+        "colFamilySize": "የቤተሰብ ብዛት",
+        "colActions": "ድርጊቶች",
+        "noResults": "ምንም ውጤት አልተገኘም።",
+        "actionsLabel": "ድርጊቶች",
+        "edit": "አርትዕ",
+        "delete": "ሰርዝ",
+        "deleteDialogTitle": "እርግጠኛ ነዎት?",
+        "deleteDialogDesc": "ይህ ድርጊት ሊቀለበስ አይችልም። ይህ የቤት ባለቤቱን መዝገብ ለ {fullName} በቋሚነት ይሰርዘዋል።",
+        "cancel": "ሰርዝ",
+        "deleteConfirm": "ሰርዝ",
+        "deleteSuccessToast": "የቤት ባለቤት {fullName} ተሰርዟል።"
+    },
+    "addHolderPage": {
+        "title": "አዲስ የቤት ባለቤት ጨምር"
+    },
+    "editHolderPage": {
+        "title": "የቤት ባለቤትን ያርትዑ"
+    },
+    "holderForm": {
+        "detailsTitle": "የቤት ባለቤት ዝርዝሮች",
+        "fullNameLabel": "ሙሉ ስም",
+        "fullNamePlaceholder": "አበበ ከበደ",
+        "fullNameMinCharsError": "ሙሉ ስም ቢያንስ 2 ቁምፊዎች መሆን አለበት።",
+        "houseNumberLabel": "የቤት ቁጥር",
+        "houseNumberPlaceholder": "ABM-123",
+        "houseNumberRequiredError": "የቤት ቁጥር ያስፈልጋል።",
+        "phoneLabel": "ስልክ ቁጥር",
+        "phonePlaceholder": "0912345678",
+        "phoneInvalidError": "የማይሰራ የኢትዮጵያ ስልክ ቁጥር።",
+        "familySizeLabel": "የቤተሰብ ብዛት",
+        "familySizeMinError": "የቤተሰብ ብዛት ቢያንስ 1 መሆን አለበት።",
+        "kebeleLabel": "ቀበሌ / አካባቢ",
+        "kebelePlaceholder": "ቀበሌ ይምረጡ",
+        "kebeleRequiredError": "እባክዎ ቀበሌ ይምረጡ።",
+        "locationTitle": "አካባቢ",
+        "latitudeLabel": "ኬክሮስ",
+        "longitudeLabel": "ኬንትሮስ",
+        "cancel": "ሰርዝ",
+        "create": "ፍጠር",
+        "update": "አዘምን",
+        "successToastTitle": "ስኬት፡ {action}",
+        "successToastDesc": "የቤት ባለቤት {fullName} በተሳካ ሁኔታ {action}።",
+        "actionCreated": "ተፈጥሯል",
+        "actionUpdated": "ተዘምኗል"
+    },
+    "mapPage": {
+        "title": "የቤት ባለቤቶች የካርታ እይታ"
+    },
+     "mapView": {
+        "infoWindow": {
+            "phone": "ስልክ",
+            "viewDetails": "ዝርዝሮችን ይመልከቱ"
+        }
+    },
+    "emergencyPage": {
+        "title": "የአደጋ ጊዜ አካባቢ አግኚ",
+        "description": "በካርታው ላይ ንብረት ለማግኘት በቤት ቁጥር በፍጥነት ይፈልጉ።",
+        "searchPlaceholder": "በቤት ቁጥር ይፈልጉ...",
+        "noHouseNumberFound": "ምንም የቤት ቁጥር አልተገኘም።"
+    },
+    "csvImporter": {
+        "button": "ከCSV አስመጣ",
+        "dialogTitle": "የቤት ባለቤቶችን ከ CSV አስመጣ",
+        "dialogDescription": "የቤት ባለቤት ውሂብ ያለው የ CSV ፋይል ይስቀሉ። ፋይሉ ራስጌዎችን መያዝ አለበት፡ fullName፣ houseNumber፣ phone፣ familySize፣ kebele፣ latitude እና longitude።",
+        "fileLabel": "CSV ፋይል",
+        "fileTypeError": "እባክዎ የሚሰራ የ CSV ፋይል ይስቀሉ።",
+        "missingColsError": "CSV አስፈላጊ ዓምዶችን ይጎድለዋል፡ {fields}።",
+        "parsingError": "CSVን በመተንተን ላይ ስህተት፡ {message}",
+        "previewTitle": "የውሂብ ቅድመ እይታ",
+        "colFullName": "ሙሉ ስም",
+        "colHouseNumber": "የቤት ቁጥር",
+        "colKebele": "ቀበሌ",
+        "colFamilySize": "የቤተሰብ ብዛት",
+        "colPhone": "ስልክ",
+        "cancel": "ሰርዝ",
+        "importButton": "{count} መዝገቦችን አስመጣ",
+        "importSuccessToastTitle": "ማስመጣት ተሳክቷል።",
+        "importSuccessToastDesc": "{count} የቤት ባለቤት መዝገቦች ለማስመጣት ተዘጋጅተዋል።"
+    },
+    "apiProvider": {
+        "errorTitle": "የጎግል ካርታዎች ኤፒአይ ቁልፍ ጠፍቷል",
+        "errorDesc": "የካርታ ባህሪያትን ለማንቃት እባክዎ ልክ የሆነ የጎግል ካርታዎች ኤፒአይ ቁልፍ በአካባቢዎ ተለዋዋጮች (NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) ያቅርቡ።"
+    },
+    "language": "ቋንቋ",
+    "english": "እንግሊዝኛ",
+    "amharic": "አማርኛ"
+}

@@ -1,7 +1,7 @@
 'use server';
 
 import { getFirestore, doc, setDoc, serverTimestamp } from 'firebase/firestore';
-import { initializeFirebase } from '.';
+import { initializeFirebase } from './init';
 import type { User } from 'firebase/auth';
 
 initializeFirebase();

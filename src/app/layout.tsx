@@ -6,7 +6,6 @@ export const metadata: Metadata = {
   title: 'Arba-Minch city housing',
   description: 'Arba-Minch city housing information management system',
   themeColor: '#49B349',
-  manifest: '/manifest.json',
 };
 
 export default function RootLayout({

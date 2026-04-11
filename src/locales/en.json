@@ -147,8 +147,11 @@
     "colPhone": "Phone",
     "cancel": "Cancel",
     "importButton": "Import {count} Records",
-    "importSuccessToastTitle": "Import Successful",
-    "importSuccessToastDesc": "{count} house holder records have been prepared for import."
+    "importingButton": "Importing...",
+    "importSuccessToastTitle": "Import Complete",
+    "importSuccessToastDesc": "{count} house holder records were successfully imported.",
+    "importPartialErrorToastTitle": "Partial Import",
+    "importPartialErrorToastDesc": "Successfully imported {successCount} records. Failed to import {errorCount} records. Check console for details."
   },
   "apiProvider": {
     "errorTitle": "Google Maps API Key is Missing",

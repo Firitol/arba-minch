@@ -42,6 +42,8 @@ import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/context/language-context';
+import { useFirestore } from '@/firebase';
+import { deleteHouseHolder } from '@/firebase/householders';
 
 interface HouseHoldersTableProps {
   data: HouseHolder[];
@@ -49,6 +51,7 @@ interface HouseHoldersTableProps {
 
 export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
   const { t } = useTranslation();
+  const firestore = useFirestore();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [filterKebele, setFilterKebele] = React.useState('all');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
@@ -56,7 +59,7 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
     React.useState<HouseHolder | null>(null);
   const { toast } = useToast();
 
-  const filteredData = data
+  const filteredData = (data || [])
     .filter((holder) => {
       const matchSearch =
         holder.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -67,18 +70,26 @@ export function HouseHoldersTable({ data }: HouseHoldersTableProps) {
     })
     .sort((a, b) => a.fullName.localeCompare(b.fullName));
 
-  const handleDeleteConfirm = () => {
-    if (selectedHolder) {
-      console.log('Deleting:', selectedHolder.id);
-      // Here you would call your delete action/API
-      toast({
-        title: 'Success',
-        description: t('houseHoldersTable.deleteSuccessToast', {
-          fullName: selectedHolder.fullName,
-        }),
-      });
-      setIsDeleteDialogOpen(false);
-      setSelectedHolder(null);
+  const handleDeleteConfirm = async () => {
+    if (selectedHolder && firestore) {
+      try {
+        await deleteHouseHolder(firestore, selectedHolder.id);
+        toast({
+          title: 'Success',
+          description: t('houseHoldersTable.deleteSuccessToast', {
+            fullName: selectedHolder.fullName,
+          }),
+        });
+      } catch (error: any) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: error.message || 'Failed to delete house holder.',
+        });
+      } finally {
+        setIsDeleteDialogOpen(false);
+        setSelectedHolder(null);
+      }
     }
   };
 

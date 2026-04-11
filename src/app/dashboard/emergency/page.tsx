@@ -1,11 +1,19 @@
 'use client';
 
 import { EmergencyMapView } from '@/components/map/emergency-map-view';
-import { mockHouseHolders } from '@/lib/data';
 import { useTranslation } from '@/context/language-context';
+import { useCollection, useFirestore } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import { HouseHolder } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function EmergencyPage() {
   const { t } = useTranslation();
+  const firestore = useFirestore();
+  const { data: houseHolders, loading } = useCollection<HouseHolder>(
+    firestore ? collection(firestore, 'householders') : null
+  );
+
   return (
     <div className="flex h-[calc(100vh-10rem)] flex-col">
       <h2 className="mb-4 text-3xl font-bold tracking-tight">
@@ -13,7 +21,11 @@ export default function EmergencyPage() {
       </h2>
       <p className="mb-4 text-muted-foreground">{t('emergencyPage.description')}</p>
       <div className="flex-grow overflow-hidden rounded-lg border bg-card shadow-sm">
-        <EmergencyMapView houseHolders={mockHouseHolders} />
+         {loading ? (
+          <Skeleton className="h-full w-full" />
+        ) : (
+          <EmergencyMapView houseHolders={houseHolders || []} />
+        )}
       </div>
     </div>
   );

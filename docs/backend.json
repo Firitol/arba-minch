@@ -34,6 +34,48 @@
         "role",
         "createdAt"
       ]
+    },
+    "HouseHolder": {
+      "title": "House Holder",
+      "description": "Represents a house holder in Arba-Minch city.",
+      "type": "object",
+      "properties": {
+        "houseNumber": {
+          "type": "string"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "familySize": {
+          "type": "number"
+        },
+        "kebele": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "number"
+        },
+        "longitude": {
+          "type": "number"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "houseNumber",
+        "fullName",
+        "phone",
+        "familySize",
+        "kebele",
+        "latitude",
+        "longitude",
+        "createdAt"
+      ]
     }
   },
   "auth": {
@@ -48,6 +90,12 @@
         "$ref": "#/entities/UserProfile"
       },
       "description": "Stores user profile information, keyed by user ID."
+    },
+    "/householders/{householderId}": {
+      "schema": {
+        "$ref": "#/entities/HouseHolder"
+      },
+      "description": "Stores house holder information."
     }
   }
 }

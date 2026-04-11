@@ -28,6 +28,9 @@ import { useToast } from '@/hooks/use-toast';
 import { LocationPicker } from '../map/location-picker';
 import { useState } from 'react';
 import { useTranslation } from '@/context/language-context';
+import { useFirestore } from '@/firebase';
+import { addHouseHolder, updateHouseHolder } from '@/firebase/householders';
+import { Loader2 } from 'lucide-react';
 
 interface HouseHolderFormProps {
   houseHolder?: HouseHolder;
@@ -36,6 +39,7 @@ interface HouseHolderFormProps {
 export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
   const router = useRouter();
   const { toast } = useToast();
+  const firestore = useFirestore();
   const { t } = useTranslation();
   const isEditMode = !!houseHolder;
 
@@ -73,15 +77,35 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
     lng: form.getValues('longitude'),
   });
 
-  function onSubmit(values: HouseHolderFormValues) {
-    const action = isEditMode ? t('holderForm.actionUpdated') : t('holderForm.actionCreated');
-    console.log(values);
-    toast({
-      title: t('holderForm.successToastTitle', { action }),
-      description: t('holderForm.successToastDesc', { fullName: values.fullName, action }),
-    });
-    router.push('/dashboard/house-holders');
-    router.refresh();
+  async function onSubmit(values: HouseHolderFormValues) {
+    if (!firestore) return;
+    form.formState.isSubmitting = true;
+
+    try {
+      if (isEditMode && houseHolder?.id) {
+        await updateHouseHolder(firestore, houseHolder.id, values);
+        toast({
+          title: t('holderForm.successToastTitle', { action: t('holderForm.actionUpdated') }),
+          description: t('holderForm.successToastDesc', { fullName: values.fullName, action: t('holderForm.actionUpdated') }),
+        });
+      } else {
+        await addHouseHolder(firestore, values);
+        toast({
+          title: t('holderForm.successToastTitle', { action: t('holderForm.actionCreated') }),
+          description: t('holderForm.successToastDesc', { fullName: values.fullName, action: t('holderForm.actionCreated') }),
+        });
+      }
+      router.push('/dashboard/house-holders');
+      router.refresh();
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message || 'An unexpected error occurred.',
+      });
+    } finally {
+        form.formState.isSubmitting = false;
+    }
   }
 
   return (
@@ -223,10 +247,12 @@ export function HouseHolderForm({ houseHolder }: HouseHolderFormProps) {
             type="button"
             variant="outline"
             onClick={() => router.back()}
+            disabled={form.formState.isSubmitting}
           >
             {t('holderForm.cancel')}
           </Button>
-          <Button type="submit">
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isEditMode ? t('holderForm.update') : t('holderForm.create')}
           </Button>
         </div>

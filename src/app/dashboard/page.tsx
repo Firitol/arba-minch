@@ -2,19 +2,26 @@
 
 import StatCard from '@/components/dashboard/stat-card';
 import { KEBELÉS } from '@/lib/constants';
-import { mockHouseHolders } from '@/lib/data';
 import { Home, MapPin, Users } from 'lucide-react';
 import { useTranslation } from '@/context/language-context';
 import Link from 'next/link';
+import { useCollection, useFirestore } from '@/firebase';
+import { collection } from 'firebase/firestore';
+import { HouseHolder } from '@/lib/types';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
-  const totalHouseHolders = mockHouseHolders.length;
-  const totalKebeles = new Set(mockHouseHolders.map((h) => h.kebele)).size;
-  const totalPopulation = mockHouseHolders.reduce(
-    (sum, h) => sum + h.familySize,
-    0
+  const firestore = useFirestore();
+  const { data: houseHolders, loading } = useCollection<HouseHolder>(
+    firestore ? collection(firestore, 'householders') : null
   );
+
+  const totalHouseHolders = houseHolders?.length || 0;
+  const totalKebeles = houseHolders
+    ? new Set(houseHolders.map((h) => h.kebele)).size
+    : 0;
+  const totalPopulation =
+    houseHolders?.reduce((sum, h) => sum + h.familySize, 0) || 0;
 
   return (
     <>
@@ -27,21 +34,21 @@ export default function DashboardPage() {
         <Link href="/dashboard/house-holders">
           <StatCard
             title={t('dashboard.totalHouseHolders')}
-            value={totalHouseHolders.toLocaleString()}
+            value={loading ? '...' : totalHouseHolders.toLocaleString()}
             icon={Home}
             description={t('dashboard.totalHouseHoldersDesc')}
           />
         </Link>
         <StatCard
           title={t('dashboard.estimatedPopulation')}
-          value={totalPopulation.toLocaleString()}
+          value={loading ? '...' : totalPopulation.toLocaleString()}
           icon={Users}
           description={t('dashboard.estimatedPopulationDesc')}
         />
         <Link href="/dashboard/map">
           <StatCard
             title={t('dashboard.kebelesCovered')}
-            value={`${totalKebeles} / ${KEBELÉS.length}`}
+            value={loading ? '...' : `${totalKebeles} / ${KEBELÉS.length}`}
             icon={MapPin}
             description={t('dashboard.kebelesCoveredDesc')}
           />

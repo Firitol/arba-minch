@@ -147,8 +147,11 @@
         "colPhone": "ስልክ",
         "cancel": "ሰርዝ",
         "importButton": "{count} መዝገቦችን አስመጣ",
-        "importSuccessToastTitle": "ማስመጣት ተሳክቷል።",
-        "importSuccessToastDesc": "{count} የቤት ባለቤት መዝገቦች ለማስመጣት ተዘጋጅተዋል።"
+        "importingButton": "በማስገባት ላይ...",
+        "importSuccessToastTitle": "ማስመጣት ተጠናቋል",
+        "importSuccessToastDesc": "{count} የቤት ባለቤት መዝገቦች በተሳካ ሁኔታ ገብተዋል።",
+        "importPartialErrorToastTitle": "ከፊል ማስመጣት",
+        "importPartialErrorToastDesc": "{successCount} መዝገቦች በተሳካ ሁኔታ ገብተዋል። {errorCount} መዝገቦችን ማስገባት አልተሳካም። ለዝርዝሮች ኮንሶሉን ያረጋግጡ።"
     },
     "apiProvider": {
         "errorTitle": "የጎግል ካርታዎች ኤፒአይ ቁልፍ ጠፍቷል",

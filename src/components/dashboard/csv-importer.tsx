@@ -25,34 +25,53 @@ import {
   TableRow,
 } from '../ui/table';
 import { ScrollArea } from '../ui/scroll-area';
-import { Upload } from 'lucide-react';
+import { Loader2, Upload } from 'lucide-react';
 import { useTranslation } from '@/context/language-context';
+import { useFirestore } from '@/firebase';
+import { addHouseHolder } from '@/firebase/householders';
 
-type CsvData = Partial<HouseHolder>;
+type CsvData = Omit<HouseHolder, 'id' | 'createdAt'>;
 
 export function CsvImporter() {
   const { t } = useTranslation();
+  const firestore = useFirestore();
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [data, setData] = useState<CsvData[]>([]);
   const [error, setError] = useState('');
+  const [isImporting, setIsImporting] = useState(false);
   const { toast } = useToast();
 
+  const resetState = () => {
+    setFile(null);
+    setData([]);
+    setError('');
+    setIsImporting(false);
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    resetState();
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       if (selectedFile.type !== 'text/csv') {
         setError(t('csvImporter.fileTypeError'));
-        setFile(null);
-        setData([]);
         return;
       }
       setFile(selectedFile);
-      setError('');
 
       Papa.parse(selectedFile, {
         header: true,
         skipEmptyLines: true,
+        transform: (value, header) => {
+          if (
+            header === 'familySize' ||
+            header === 'latitude' ||
+            header === 'longitude'
+          ) {
+            return parseFloat(value);
+          }
+          return value;
+        },
         complete: (results) => {
           const requiredFields = [
             'fullName',
@@ -74,7 +93,6 @@ export function CsvImporter() {
                 fields: missingFields.join(', '),
               })
             );
-            setData([]);
             return;
           }
 
@@ -83,28 +101,72 @@ export function CsvImporter() {
         },
         error: (err) => {
           setError(t('csvImporter.parsingError', { message: err.message }));
-          setData([]);
         },
       });
     }
   };
 
-  const handleImport = () => {
-    console.log('Importing data:', data);
-    toast({
-      title: t('csvImporter.importSuccessToastTitle'),
-      description: t('csvImporter.importSuccessToastDesc', {
-        count: data.length,
-      }),
-    });
+  const handleImport = async () => {
+    if (!firestore || data.length === 0) return;
+
+    setIsImporting(true);
+    let successCount = 0;
+    let errorCount = 0;
+
+    for (const row of data) {
+      try {
+        // Basic validation before sending to Firestore
+        if (
+          !row.fullName ||
+          !row.houseNumber ||
+          isNaN(row.familySize) ||
+          isNaN(row.latitude) ||
+          isNaN(row.longitude)
+        ) {
+          throw new Error(`Invalid data for row: ${row.fullName}`);
+        }
+        await addHouseHolder(firestore, row);
+        successCount++;
+      } catch (e) {
+        console.error('Failed to import row:', row, e);
+        errorCount++;
+      }
+    }
+
+    setIsImporting(false);
+
+    if (errorCount > 0) {
+      toast({
+        variant: 'destructive',
+        title: t('csvImporter.importPartialErrorToastTitle'),
+        description: t('csvImporter.importPartialErrorToastDesc', {
+          successCount: successCount,
+          errorCount: errorCount,
+        }),
+      });
+    } else {
+      toast({
+        title: t('csvImporter.importSuccessToastTitle'),
+        description: t('csvImporter.importSuccessToastDesc', {
+          count: successCount,
+        }),
+      });
+    }
+
     setOpen(false);
-    setFile(null);
-    setData([]);
-    setError('');
+    resetState();
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        if (!isOpen) {
+          resetState();
+        }
+        setOpen(isOpen);
+      }}
+    >
       <DialogTrigger asChild>
         <Button variant="outline">
           <Upload className="mr-2 h-4 w-4" />
@@ -126,6 +188,7 @@ export function CsvImporter() {
               type="file"
               accept=".csv"
               onChange={handleFileChange}
+              disabled={isImporting}
             />
           </div>
           {error && <p className="text-sm text-destructive">{error}</p>}
@@ -162,14 +225,23 @@ export function CsvImporter() {
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isImporting}
+          >
             {t('csvImporter.cancel')}
           </Button>
           <Button
             onClick={handleImport}
-            disabled={data.length === 0 || !!error}
+            disabled={data.length === 0 || !!error || isImporting}
           >
-            {t('csvImporter.importButton', { count: data.length > 0 ? data.length : '' })}
+            {isImporting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isImporting
+              ? t('csvImporter.importingButton')
+              : t('csvImporter.importButton', {
+                  count: data.length > 0 ? data.length : '',
+                })}
           </Button>
         </DialogFooter>
       </DialogContent>
